@@ -1,5 +1,11 @@
 Code.require_file "test_helper.exs", __DIR__
 
+defmodule Dummy do
+  def get(_something) do end
+  def foo(_something) do end
+  def bar() do end
+end
+
 defmodule MockTest do
   use ExUnit.Case
   import Mock
@@ -33,9 +39,9 @@ defmodule MockTest do
 
   test_with_mock "passthrough", HashDict, [:passthrough],
     [] do
-    hd = HashDict.new([{:a, 1}])
+    hd = Enum.into [{:a, 1}], HashDict.new()
     assert HashDict.get(hd, :a) == 1
-    assert called HashDict.new([{:a, 1}])
+    assert called HashDict.new()
     assert called HashDict.get(hd, :a)
     refute called HashDict.get(hd, :b)
   end
